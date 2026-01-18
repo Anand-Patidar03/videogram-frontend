@@ -12,14 +12,14 @@ const Watch = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Check for view increment loop
+
     const lastIncrementedVideoId = useRef(null);
 
-    // States for dynamic features
+
     const [comments, setComments] = useState([]);
     const [suggestedVideos, setSuggestedVideos] = useState([]);
     const [isLiked, setIsLiked] = useState(false);
-    const [likeCount, setLikeCount] = useState(0); // Backend doesn't provide initial count in video object, defaulting to 0
+    const [likeCount, setLikeCount] = useState(0);
     const [isSubscribed, setIsSubscribed] = useState(false);
     const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
     const [newComment, setNewComment] = useState("");
@@ -27,7 +27,7 @@ const Watch = () => {
     const [editingCommentId, setEditingCommentId] = useState(null);
     const [editedContent, setEditedContent] = useState("");
 
-    // Get current user for ownership checks
+
     useEffect(() => {
         const userStr = localStorage.getItem("user");
         if (userStr) {
@@ -39,26 +39,26 @@ const Watch = () => {
         }
     }, []);
 
-    // Helper removed in favor of formatTimeAgo utility
 
-    // Fetch Video Details
+
+
     useEffect(() => {
         const fetchVideoDetails = async () => {
             try {
                 setLoading(true);
                 setError(null);
 
-                // 1. Fetch Video
+
                 const videoRes = await api.get(`/videos/${videoId}`);
                 const videoData = videoRes.data.data;
                 setVideo(videoData);
 
-                // Initialize states from API data
-                setLikeCount(videoData.likesCount || 0); // Use backend count if available
-                setIsLiked(videoData.isLiked || false); // Use backend status if available
-                setIsSubscribed(videoData.isSubscribed || false); // Use backend status if available
 
-                // 2. Fetch Comments
+                setLikeCount(videoData.likesCount || 0);
+                setIsLiked(videoData.isLiked || false);
+                setIsSubscribed(videoData.isSubscribed || false);
+
+
                 try {
                     const commentsRes = await api.get(`/comments/${videoId}`);
                     const val = commentsRes.data?.data;
@@ -69,7 +69,7 @@ const Watch = () => {
                     setComments([]);
                 }
 
-                // 3. Fetch Suggestions (All videos, exclude current)
+
                 fetchSuggestions(1);
             } catch (err) {
                 console.error("Error fetching video:", err);
@@ -84,7 +84,7 @@ const Watch = () => {
         }
     }, [videoId]);
 
-    // Handle View Increment
+
     useEffect(() => {
         if (videoId && lastIncrementedVideoId.current !== videoId) {
             const incrementView = async () => {
@@ -99,7 +99,7 @@ const Watch = () => {
         }
     }, [videoId]);
 
-    // Pagination for suggestions
+
     const [suggestionPage, setSuggestionPage] = useState(1);
     const [hasMoreSuggestions, setHasMoreSuggestions] = useState(true);
     const [loadingSuggestions, setLoadingSuggestions] = useState(false);
@@ -107,11 +107,11 @@ const Watch = () => {
     const fetchSuggestions = async (pageNum = 1) => {
         try {
             setLoadingSuggestions(true);
-            const suggestionsRes = await api.get(`/videos?page=${pageNum}&limit=5`); // Reduced limit to show pagination
+            const suggestionsRes = await api.get(`/videos?page=${pageNum}&limit=5`);
             const val = suggestionsRes.data?.data;
             const newVideos = Array.isArray(val) ? val : (Array.isArray(val?.docs) ? val.docs : []);
 
-            // Filter out current video
+
             const filteredNewVideos = newVideos.filter(v => v._id !== videoId);
 
             setSuggestedVideos(prev => pageNum === 1 ? filteredNewVideos : [...prev, ...filteredNewVideos]);
@@ -136,14 +136,14 @@ const Watch = () => {
 
     const handleToggleLike = async () => {
         try {
-            // Optimistic update
+
             setIsLiked((prev) => !prev);
             setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
 
             await api.post(`/likes/toggle/v/${videoId}`);
         } catch (err) {
             console.error("Failed to toggle like", err);
-            // Revert on failure
+
             setIsLiked((prev) => !prev);
             setLikeCount((prev) => (isLiked ? prev - 1 : prev + 1));
         }
@@ -152,7 +152,7 @@ const Watch = () => {
     const handleSubscribe = async () => {
         if (!video?.owner?._id) return;
         try {
-            // Optimistic update
+
             setIsSubscribed((prev) => !prev);
             await api.post(`/subscriptions/c/${video.owner._id}`);
         } catch (err) {
@@ -169,8 +169,7 @@ const Watch = () => {
             const res = await api.post(`/comments/${videoId}`, { content: newComment });
             const addedComment = res.data.data;
 
-            // If backend returns owner as an ID string (common in simple creates), 
-            // or doesn't return it at all, use currentUser for satisfying the UI.
+
             if ((!addedComment.owner || typeof addedComment.owner === 'string') && currentUser) {
                 addedComment.owner = currentUser;
             }
@@ -232,13 +231,13 @@ const Watch = () => {
         }
     };
 
-    // --- Update Video Feature ---
+
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [updateTitle, setUpdateTitle] = useState("");
     const [updateDescription, setUpdateDescription] = useState("");
     const [updateThumbnail, setUpdateThumbnail] = useState(null);
 
-    // Share Feature
+
     const [isShareModalOpen, setIsShareModalOpen] = useState(false);
     const [copySuccess, setCopySuccess] = useState(false);
 
@@ -258,7 +257,7 @@ const Watch = () => {
     const openEditModal = () => {
         setUpdateTitle(video.title);
         setUpdateDescription(video.description);
-        setUpdateThumbnail(null); // Reset file input
+        setUpdateThumbnail(null);
         setIsEditModalOpen(true);
     };
 
@@ -301,7 +300,7 @@ const Watch = () => {
         }
     };
 
-    // --- Save to Playlist Feature ---
+
     const [isSaveModalOpen, setIsSaveModalOpen] = useState(false);
     const [userPlaylists, setUserPlaylists] = useState([]);
     const [fetchingPlaylists, setFetchingPlaylists] = useState(false);
@@ -330,21 +329,21 @@ const Watch = () => {
     };
 
     const handleTogglePlaylist = async (playlist) => {
-        const isAdded = playlist.videos.some(v => v._id === video._id || v === video._id); // Check both object and ID
+        const isAdded = playlist.videos.some(v => v._id === video._id || v === video._id);
         try {
             if (isAdded) {
                 await api.patch(`/playlists/remove/${videoId}/${playlist._id}`);
             } else {
                 await api.patch(`/playlists/add/${videoId}/${playlist._id}`);
             }
-            // Refresh playlists to update UI state
+
             fetchUserPlaylists();
         } catch (err) {
             console.error("Failed to update playlist", err);
         }
     };
 
-    // Create new playlist from modal
+
     const handleCreatePlaylistQuick = async () => {
         const name = prompt("Enter playlist name:");
         if (!name) return;
@@ -381,10 +380,10 @@ const Watch = () => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
-                    {/* LEFT COLUMN: Player & Info */}
+
                     <div className="lg:col-span-2 space-y-6">
 
-                        {/* 1. Video Player Section */}
+
                         <div className="relative w-full aspect-video bg-black rounded-3xl overflow-hidden shadow-[0_0_40px_rgba(0,0,0,0.6)] border border-gray-800" aria-label="Video Player">
                             <video
                                 src={video.videoFile}
@@ -396,7 +395,7 @@ const Watch = () => {
                             </video>
                         </div>
 
-                        {/* 2. Video Info Section */}
+
                         <div>
                             <div className="flex justify-between items-start gap-4">
                                 <h1 className="text-xl md:text-2xl font-bold leading-tight flex-1">{video.title}</h1>
@@ -449,7 +448,7 @@ const Watch = () => {
                             </div>
                         </div>
 
-                        {/* 3. Channel Info & Description */}
+
                         <div className="bg-gray-800/20 rounded-2xl p-4 md:p-6 backdrop-blur-sm border border-white/5">
                             <div className="flex justify-between items-center mb-4">
                                 <Link to={`/channel/${video?.owner?.username || "unknown"}`} className="flex items-center gap-4 group">
@@ -492,11 +491,11 @@ const Watch = () => {
                             </div>
                         </div>
 
-                        {/* Comments Section */}
+
                         <div className="pt-4">
                             <h3 className="text-xl font-bold mb-6">{comments.length} Comments</h3>
 
-                            {/* Add Comment Input */}
+
                             <form onSubmit={handleAddComment} className="flex gap-4 mb-8">
                                 <div className="w-10 h-10 rounded-full bg-gray-700 flex-shrink-0 overflow-hidden">
                                     {currentUser?.avatar ? (
@@ -525,7 +524,7 @@ const Watch = () => {
                                 </div>
                             </form>
 
-                            {/* Comments List */}
+
                             <div className="space-y-6">
                                 {comments.map((comment) => (
                                     <div key={comment._id} className="flex gap-4 group">
@@ -572,7 +571,7 @@ const Watch = () => {
                                                 <p className="text-sm text-gray-300 leading-relaxed">{comment.content}</p>
                                             )}
 
-                                            {/* Comment Actions */}
+
                                             <div className="flex items-center gap-4 mt-2">
                                                 <button
                                                     onClick={() => handleToggleCommentLike(comment._id)}
@@ -586,7 +585,7 @@ const Watch = () => {
                                                     {comment.likesCount || 0}
                                                 </button>
 
-                                                {/* Edit/Delete Actions (Only Owner) */}
+
                                                 {currentUser && comment.owner && currentUser._id === comment.owner._id && !editingCommentId && (
                                                     <>
                                                         <button
@@ -613,7 +612,7 @@ const Watch = () => {
 
                     </div>
 
-                    {/* RIGHT COLUMN: Suggested Videos */}
+
                     <div className="lg:col-span-1">
                         <h3 className="text-xl font-bold mb-6">Up Next</h3>
 
@@ -632,14 +631,14 @@ const Watch = () => {
                                         likes={video.likesCount || 0}
                                         uploadedAt={formatTimeAgo(video.createdAt)}
                                         duration={video.duration ? `${Math.floor(video.duration / 60)}:${String(Math.floor(video.duration % 60)).padStart(2, '0')}` : "00:00"}
-                                        type="horizontal" // Use lighter, smaller horizontal layout
+                                        type="horizontal"
                                     />
                                 ))
                             ) : (
                                 <p className="text-gray-500 text-sm">No other videos found.</p>
                             )}
 
-                            {/* Load More Suggestions Button */}
+
                             {hasMoreSuggestions && (
                                 <div className="text-center pt-2">
                                     <button
@@ -658,7 +657,7 @@ const Watch = () => {
                 </div >
             </div>
 
-            {/* Edit Video Modal */}
+
             {
                 isEditModalOpen && (
                     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
@@ -714,7 +713,7 @@ const Watch = () => {
                 )
             }
 
-            {/* Save to Playlist Modal */}
+
             {isSaveModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
                     <div className="bg-gray-900 border border-gray-700 p-6 rounded-2xl w-full max-w-sm shadow-2xl relative">
@@ -767,7 +766,7 @@ const Watch = () => {
                 </div>
             )}
 
-            {/* Share Modal */}
+
             {isShareModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
                     <div className="bg-gray-900 border border-gray-700 p-6 rounded-2xl w-full max-w-md shadow-2xl relative">
@@ -778,7 +777,7 @@ const Watch = () => {
                             </button>
                         </div>
 
-                        {/* Social Links */}
+
                         <div className="flex justify-around gap-4 mb-8">
                             {shareLinks.map((link) => (
                                 <a
@@ -796,7 +795,7 @@ const Watch = () => {
                             ))}
                         </div>
 
-                        {/* Copy Link Section */}
+
                         <div className="bg-black/50 rounded-xl p-2 flex items-center gap-2 border border-gray-800">
                             <input
                                 type="text"

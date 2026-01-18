@@ -18,12 +18,12 @@ export const formatTimeAgo = (dateString) => {
         const h = Math.floor(secondsPast / 3600);
         return `${h} hour${h === 1 ? '' : 's'} ago`;
     }
-    if (secondsPast <= 604800) { // 7 days
+    if (secondsPast <= 604800) {
         const d = Math.floor(secondsPast / 86400);
         return `${d} day${d === 1 ? '' : 's'} ago`;
     }
 
-    // If more than 7 days, return formatted date
+
     return date.toLocaleDateString(undefined, {
         year: 'numeric',
         month: 'short',

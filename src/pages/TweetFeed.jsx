@@ -77,7 +77,7 @@ const TweetFeed = () => {
                     <p className="text-gray-400">Join the conversation with creators and fans.</p>
                 </div>
 
-                {/* Create Tweet Box */}
+
                 <div className="bg-gray-800/40 border border-white/5 rounded-2xl p-4 mb-8 backdrop-blur-sm">
                     <form onSubmit={handlePost}>
                         <div className="flex gap-4">
@@ -113,7 +113,7 @@ const TweetFeed = () => {
                     </form>
                 </div>
 
-                {/* Feed */}
+
                 <div className="space-y-4">
                     {tweets.map((tweet) => (
                         <div key={tweet.id} className="bg-gray-800/20 border border-white/5 rounded-2xl p-6 hover:bg-gray-800/40 transition-colors">

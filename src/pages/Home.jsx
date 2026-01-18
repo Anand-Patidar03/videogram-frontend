@@ -70,7 +70,7 @@ const TweetCard = ({ tweet, onDelete, onUpdate }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [content, setContent] = useState(tweet.content);
 
-  // Reply States
+
   const [showReplies, setShowReplies] = useState(false);
   const [replies, setReplies] = useState([]);
   const [replyContent, setReplyContent] = useState("");
@@ -98,8 +98,7 @@ const TweetCard = ({ tweet, onDelete, onUpdate }) => {
       setLoadingReplies(true);
       try {
         const res = await api.get(`/comments/t/${tweet._id}`);
-        // Adjust depending on how aggregatePaginate returns data. 
-        // Based on my backend fix: res.data.data should be the 'comments' object with 'docs'.
+
         const fetchedReplies = res.data.data.docs || [];
         setReplies(fetchedReplies);
       } catch (err) {
@@ -117,20 +116,13 @@ const TweetCard = ({ tweet, onDelete, onUpdate }) => {
     try {
       const res = await api.post(`/comments/t/${tweet._id}`, { content: replyContent });
       const newReply = res.data.data;
-      // The backend might return owner as ID depending on creation, 
-      // unlike update where we might just return the doc. 
-      // Ideally we should populate or just append securely. 
-      // For quick optimistic UI let's rely on backend return or refresh. 
-      // Assuming backend returns clean object. 
-      // Actually, my addTweetComment backend just returns the created comment object (unpopulated owner).
-      // I should stick to fetching fresh or just adding roughly. 
-      // Let's refetch or augment locally.
+
       const userStr = localStorage.getItem("user");
       const currentUser = userStr ? JSON.parse(userStr) : {};
 
       const optimisticReply = {
         ...newReply,
-        owner: currentUser, // Mock populated owner for display
+        owner: currentUser,
         likesCount: 0,
         isLiked: false
       };
@@ -187,7 +179,7 @@ const TweetCard = ({ tweet, onDelete, onUpdate }) => {
             <p className="mt-1 text-gray-200 whitespace-pre-wrap">{content}</p>
           )}
 
-          {/* Action Buttons */}
+
           <div className="flex items-center gap-6 mt-4 text-gray-500 text-sm">
             <button onClick={handleLike} className={`flex items-center gap-2 group ${liked ? 'text-pink-500' : 'hover:text-pink-500'}`}>
               <svg className={`w-5 h-5 ${liked ? 'fill-current' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path></svg>
@@ -201,10 +193,10 @@ const TweetCard = ({ tweet, onDelete, onUpdate }) => {
         </div>
       </div>
 
-      {/* Reply Section */}
+
       {showReplies && (
         <div className="mt-6 pt-4 border-t border-gray-700 ml-14">
-          {/* Add Reply */}
+
           <form onSubmit={handleAddReply} className="flex gap-3 mb-6">
             <input
               type="text"
@@ -222,7 +214,7 @@ const TweetCard = ({ tweet, onDelete, onUpdate }) => {
             </button>
           </form>
 
-          {/* Replies List */}
+
           <div className="space-y-4">
             {replies.map(reply => (
               <div key={reply._id} className="flex gap-3">
@@ -285,7 +277,7 @@ const CreateTweet = ({ onTweetCreated }) => {
       />
       <div className="flex justify-between items-center border-t border-white/10 pt-3">
         <div className="text-blue-500">
-          {/* Icons could go here */}
+
         </div>
         <button
           type="submit"
@@ -307,7 +299,7 @@ const Home = () => {
   const [videos, setVideos] = useState([]);
   const [foundUsers, setFoundUsers] = useState([]);
   const [tweets, setTweets] = useState([]);
-  const [activeTab, setActiveTab] = useState("videos"); // 'videos' | 'community'
+  const [activeTab, setActiveTab] = useState("videos");
   const [totalUsers, setTotalUsers] = useState("10k+");
 
   const [loading, setLoading] = useState(true);
@@ -318,7 +310,7 @@ const Home = () => {
 
   const fetchTotalUsers = async () => {
     try {
-      // NOTE: Adjust endpoint if prefix is different, assuming /api/v1/users/stats/total-users
+      setLoading(true);
       const res = await api.get("/users/stats/total-users");
       if (res.data?.data?.count) {
         setTotalUsers(`${res.data.data.count}+`);
@@ -339,11 +331,11 @@ const Home = () => {
     try {
       if (pageNum === 1) setLoading(true);
 
-      // Fetch Videos
+
       const res = await api.get(`/videos?page=${pageNum}&limit=12&query=${query || ""}`);
       const newVideos = res.data.data.docs || [];
 
-      // Fetch Users (if search)
+
       if (pageNum === 1 && query) {
         const userRes = await api.get(`/users/search?query=${query}`);
         setFoundUsers(userRes.data.data || []);
@@ -410,8 +402,7 @@ const Home = () => {
     <div className="min-h-screen bg-gray-900 text-white font-sans selection:bg-purple-500 selection:text-white overflow-x-hidden">
       <AppNavbar />
 
-      {/* Background Gradients - Global & Fixed */}
-      {/* Background Gradients - Global & Fixed */}
+
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden bg-gray-950">
         <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-purple-900/20 rounded-full mix-blend-screen filter blur-[120px] animate-blob"></div>
         <div className="absolute top-[20%] right-[-10%] w-[40vw] h-[40vw] bg-blue-900/20 rounded-full mix-blend-screen filter blur-[120px] animate-blob animation-delay-2000"></div>
@@ -420,13 +411,13 @@ const Home = () => {
       </div>
 
       <div className="relative z-10">
-        {/* 1. Hero Section (Only show on Home Page proper when NOT searching) */}
+
         {!query && !isAllVideos && (
           <section className="relative pt-20 pb-20 lg:pt-32 lg:pb-32 px-6 overflow-hidden">
             <div className="max-w-7xl mx-auto">
               <div className="flex flex-col lg:flex-row items-center gap-16">
 
-                {/* Left Content */}
+
                 <div className="flex-1 text-center lg:text-left z-10 space-y-8">
                   <div className="inline-block px-4 py-1.5 rounded-full border border-purple-500/30 bg-purple-500/10 backdrop-blur-md mb-4">
                     <span className="text-purple-300 text-sm font-semibold tracking-wide uppercase">The Future of Streaming</span>
@@ -457,7 +448,7 @@ const Home = () => {
                     </Link>
                   </div>
 
-                  {/* Stats / Trust Badges */}
+
                   <div className="pt-8 flex items-center justify-center lg:justify-start gap-8 text-gray-500 text-sm font-medium">
                     <div className="flex items-center gap-2">
                       <div className="flex -space-x-3">
@@ -474,18 +465,17 @@ const Home = () => {
                   </div>
                 </div>
 
-                {/* Right Content (3D Visual) */}
+
                 <div className="lg:w-1/2 relative perspective-1000 group">
-                  {/* Glowing Background Blob behind card */}
-                  {/* Glowing Background Blob behind card */}
+
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-blue-900/20 via-purple-900/20 to-pink-900/20 rounded-full blur-[60px] group-hover:blur-[80px] transition-all duration-700 pointer-events-none"></div>
 
                   {/* The 3D Card */}
                   <div className="relative transform lg:rotate-y-[-12deg] lg:rotate-x-[5deg] group-hover:rotate-y-0 group-hover:rotate-x-0 transition-transform duration-700 ease-out preserve-3d">
 
-                    {/* Main Glass Card */}
+
                     <div className="relative bg-black/60 backdrop-blur-3xl border border-white/5 rounded-3xl p-4 shadow-2xl">
-                      {/* Card Header simulation */}
+
                       <div className="flex items-center justify-between mb-4 px-2">
                         <div className="flex items-center gap-2">
                           <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
@@ -495,16 +485,16 @@ const Home = () => {
                         <div className="h-2 w-20 bg-white/10 rounded-full"></div>
                       </div>
 
-                      {/* Video Area Placeholder */}
+
                       <div className="relative aspect-video rounded-xl overflow-hidden bg-black/50 border border-white/5 group-hover:border-purple-500/30 transition-colors">
                         <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-blue-500/10"></div>
 
-                        {/* Play Button */}
+
                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center border border-white/20 shadow-lg group-hover:scale-110 transition-transform">
                           <svg className="w-6 h-6 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
                         </div>
 
-                        {/* Fake UI Elements inside video */}
+
                         <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
                           <div className="space-y-2">
                             <div className="h-3 w-32 bg-white/20 rounded"></div>
@@ -513,7 +503,7 @@ const Home = () => {
                         </div>
                       </div>
 
-                      {/* Floating Badge 1 */}
+
                       <div className="absolute -top-6 -right-6 bg-gray-800/80 backdrop-blur-xl border border-white/10 p-3 rounded-2xl shadow-xl animate-float-slow">
                         <div className="flex items-center gap-2">
                           <span className="text-2xl">🔥</span>
@@ -524,7 +514,7 @@ const Home = () => {
                         </div>
                       </div>
 
-                      {/* Floating Badge 2 */}
+
                       <div className="absolute -bottom-8 -left-8 bg-gray-800/80 backdrop-blur-xl border border-white/10 p-3 rounded-2xl shadow-xl animate-float-delayed flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-pink-500 to-orange-500 p-[2px]">
                           <div className="w-full h-full rounded-full bg-gray-900"></div>
@@ -542,11 +532,11 @@ const Home = () => {
           </section>
         )}
 
-        {/* 2. Content Section */}
+
         <section ref={videoSectionRef} className={`px-6 ${query || isAllVideos ? 'pt-32 pb-20' : 'pb-20'}`}>
           <div className="max-w-7xl mx-auto">
 
-            {/* Header */}
+
             {!query && !isAllVideos && (
               <div className="flex gap-8 mb-8 border-b border-gray-800">
                 <button
@@ -571,7 +561,7 @@ const Home = () => {
               </div>
             )}
 
-            {/* FOUND USERS (Search only) */}
+
             {query && foundUsers.length > 0 && (
               <div className="mb-12 max-w-2xl mx-auto">
                 <h3 className="text-lg font-bold text-white text-center mb-6">Channels</h3>
@@ -583,7 +573,7 @@ const Home = () => {
               </div>
             )}
 
-            {/* CONTENT: VIDEOS vs TWEETS */}
+
             {activeTab === 'videos' || query ? (
               <>
                 {loading && page === 1 ? (
@@ -622,7 +612,7 @@ const Home = () => {
                 )}
               </>
             ) : (
-              /* TWEETS TAB */
+
               <div className="max-w-2xl mx-auto">
                 <CreateTweet onTweetCreated={handleTweetCreated} />
                 <div className="space-y-4">
@@ -644,9 +634,9 @@ const Home = () => {
           </div>
         </section>
 
-        {/* 3. Platform Features & 4. Community Stats Section (Keep existing if you wish, or remove for cleaner feed look. I'll keep them but usually feed pages are simpler. For 'Home' landing page, I'll keep them.) */}
 
-        {/* 3. Platform Features Section */}
+
+
         <section className="py-20 px-6 bg-black/20">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">

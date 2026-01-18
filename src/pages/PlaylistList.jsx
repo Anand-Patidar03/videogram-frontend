@@ -45,14 +45,14 @@ const PlaylistList = () => {
             setIsCreateModalOpen(false);
             setNewPlaylistName("");
             setNewPlaylistDesc("");
-            fetchPlaylists(); // Refresh list
+            fetchPlaylists();
         } catch (err) {
             console.error("Failed to create playlist", err);
         }
     };
 
     const handleDelete = async (e, id) => {
-        e.preventDefault(); // Prevent navigation
+        e.preventDefault();
         if (!window.confirm("Are you sure you want to delete this playlist?")) return;
         try {
             await api.delete(`/playlists/${id}`);
@@ -90,7 +90,7 @@ const PlaylistList = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {playlists.map((playlist) => (
                             <div key={playlist._id} className="group bg-gray-800/40 rounded-2xl overflow-hidden border border-white/5 hover:border-purple-500/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-                                {/* Thumbnail */}
+
                                 <Link to={`/playlist/${playlist._id}`} className="block relative aspect-video bg-gray-900 overflow-hidden">
                                     {playlist.videos && playlist.videos.length > 0 && playlist.videos[0].thumbnail ? (
                                         <img
@@ -104,16 +104,15 @@ const PlaylistList = () => {
                                         </div>
                                     )}
 
-                                    {/* Overlay Stats */}
+
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent">
                                         <div className="absolute bottom-3 left-3 right-3 flex justify-between items-center text-xs font-medium text-white">
                                             <span>{playlist.videos?.length || 0} Videos</span>
-                                            {/* Assuming private is not yet in model, but if it is: */}
-                                            {/* {playlist.isPrivate && <span className="bg-black/60 px-2 py-0.5 rounded-full backdrop-blur-sm">🔒 Private</span>} */}
+
                                         </div>
                                     </div>
 
-                                    {/* Hover Play Overlay */}
+
                                     <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                         <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center">
                                             <svg className="w-6 h-6 text-white fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
@@ -121,15 +120,13 @@ const PlaylistList = () => {
                                     </div>
                                 </Link>
 
-                                {/* Info */}
+
                                 <div className="p-4">
                                     <div className="flex justify-between items-start gap-2">
                                         <h3 className="font-bold text-white text-lg leading-tight line-clamp-1 group-hover:text-purple-400 transition-colors">
                                             <Link to={`/playlist/${playlist._id}`}>{playlist.name}</Link>
                                         </h3>
-                                        {/* <button className="text-gray-500 hover:text-white transition-colors">
-                                            <svg className="w-5 h-5 transform rotate-90" fill="currentColor" viewBox="0 0 24 24"><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z" /></svg>
-                                        </button> */}
+
                                     </div>
                                     <div className="flex justify-between items-center mt-3 text-sm text-gray-500">
                                         <span>Updated {formatTimeAgo(playlist.updatedAt)}</span>
@@ -154,7 +151,7 @@ const PlaylistList = () => {
                 )}
             </div>
 
-            {/* Create Playlist Modal */}
+
             {isCreateModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
                     <div className="bg-gray-900 border border-gray-700 p-6 rounded-2xl w-full max-w-md shadow-2xl relative">

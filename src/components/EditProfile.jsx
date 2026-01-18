@@ -5,11 +5,11 @@ const EditProfile = ({ user, onClose, onUpdate }) => {
     const [fullName, setFullName] = useState(user?.fullName || "");
     const [email, setEmail] = useState(user?.email || "");
 
-    // File states
+
     const [avatarFile, setAvatarFile] = useState(null);
     const [coverFile, setCoverFile] = useState(null);
 
-    // Preview states
+
     const [avatarPreview, setAvatarPreview] = useState(user?.avatar || "");
     const [coverPreview, setCoverPreview] = useState(user?.coverImage || "");
 
@@ -37,12 +37,12 @@ const EditProfile = ({ user, onClose, onUpdate }) => {
         setError("");
 
         try {
-            // 1. Update Details if changed
+
             if (fullName !== user?.fullName || email !== user?.email) {
                 await api.patch("/users/account-detail", { fullName, email });
             }
 
-            // 2. Update Avatar if selected
+
             if (avatarFile) {
                 const formData = new FormData();
                 formData.append("avatar", avatarFile);
@@ -50,15 +50,15 @@ const EditProfile = ({ user, onClose, onUpdate }) => {
                 await api.patch("/users/avatar", formData);
             }
 
-            // 3. Update Cover Image if selected
+
             if (coverFile) {
                 const formData = new FormData();
                 formData.append("coverImage", coverFile);
                 await api.patch("/users/cover-image", formData);
             }
 
-            onUpdate(); // Refresh profile data
-            onClose(); // Close modal
+            onUpdate();
+            onClose();
         } catch (err) {
             console.error("Failed to update profile", err);
             const errorMessage = err.response?.data?.message || "Failed to update profile. Please try again.";
@@ -72,7 +72,7 @@ const EditProfile = ({ user, onClose, onUpdate }) => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
             <div className="bg-gray-900 border border-gray-700 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
 
-                {/* Header */}
+
                 <div className="p-6 border-b border-gray-800 flex justify-between items-center">
                     <h2 className="text-2xl font-bold text-white">Edit Profile</h2>
                     <button onClick={onClose} className="text-gray-400 hover:text-white transition">
@@ -82,7 +82,7 @@ const EditProfile = ({ user, onClose, onUpdate }) => {
                     </button>
                 </div>
 
-                {/* Scrollable Content */}
+
                 <div className="p-6 overflow-y-auto custom-scrollbar space-y-8">
                     {error && (
                         <div className="bg-red-500/10 border border-red-500/50 text-red-500 px-4 py-3 rounded-lg text-sm">
@@ -90,7 +90,7 @@ const EditProfile = ({ user, onClose, onUpdate }) => {
                         </div>
                     )}
 
-                    {/* Cover Image Section */}
+
                     <div className="space-y-4">
                         <label className="block text-sm font-bold text-gray-300">Cover Image</label>
                         <div className="relative h-48 w-full rounded-xl overflow-hidden group border-2 border-dashed border-gray-700 bg-gray-800">
@@ -110,7 +110,7 @@ const EditProfile = ({ user, onClose, onUpdate }) => {
                         </div>
                     </div>
 
-                    {/* Avatar Section */}
+
                     <div className="flex items-center gap-6">
                         <div className="relative h-24 w-24 rounded-full overflow-hidden group border-2 border-gray-700 bg-gray-800 shrink-0">
                             <img src={avatarPreview || "https://via.placeholder.com/150"} alt="Avatar Preview" className="w-full h-full object-cover" />
@@ -130,7 +130,7 @@ const EditProfile = ({ user, onClose, onUpdate }) => {
                         </div>
                     </div>
 
-                    {/* Text Fields */}
+
                     <div className="grid grid-cols-1 gap-6">
                         <div className="space-y-2">
                             <label className="text-sm font-semibold text-gray-300">Full Name</label>
@@ -160,7 +160,7 @@ const EditProfile = ({ user, onClose, onUpdate }) => {
                     </div>
                 </div>
 
-                {/* Footer */}
+
                 <div className="p-6 border-t border-gray-800 bg-gray-900/50 flex justify-end gap-3">
                     <button
                         onClick={onClose}

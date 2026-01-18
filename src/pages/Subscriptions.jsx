@@ -44,7 +44,7 @@ const Subscriptions = () => {
         <div className="min-h-screen bg-gray-900 text-white font-sans selection:bg-purple-500 selection:text-white pb-20">
             <AppNavbar />
 
-            {/* Background Atmosphere */}
+
             <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
                 <div className="absolute top-[-10%] right-[-10%] w-[40vw] h-[40vw] bg-purple-900/10 rounded-full mix-blend-screen filter blur-[100px] animate-blob"></div>
                 <div className="absolute bottom-[-10%] left-[-10%] w-[30vw] h-[30vw] bg-blue-900/10 rounded-full mix-blend-screen filter blur-[100px] animate-blob animation-delay-4000"></div>
@@ -52,7 +52,7 @@ const Subscriptions = () => {
             </div>
 
             <div className="relative z-10 pt-24 px-6 max-w-7xl mx-auto">
-                {/* Header */}
+
                 <div className="flex items-end gap-4 mb-12 border-b border-gray-800 pb-6">
                     <h1 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
                         Subscriptions
@@ -62,7 +62,7 @@ const Subscriptions = () => {
                     </span>
                 </div>
 
-                {/* Content */}
+
                 {loading ? (
                     <div className="flex items-center justify-center h-64">
                         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-500"></div>
@@ -75,7 +75,7 @@ const Subscriptions = () => {
                                 className="group relative bg-gray-800/30 backdrop-blur-sm border border-white/5 rounded-2xl p-6 hover:bg-gray-800/50 hover:border-purple-500/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                             >
                                 <div className="flex flex-col items-center text-center">
-                                    {/* Avatar */}
+
                                     <Link to={`/channel/${item.channel?.username}`} className="relative mb-4 inline-block">
                                         <div className="w-20 h-20 rounded-full p-[2px] bg-gradient-to-tr from-blue-500 to-purple-500 group-hover:scale-105 transition-transform duration-300 shadow-lg">
                                             <div className="w-full h-full rounded-full bg-gray-900 p-[2px]">
@@ -88,7 +88,7 @@ const Subscriptions = () => {
                                         </div>
                                     </Link>
 
-                                    {/* Name & Handle */}
+
                                     <Link to={`/channel/${item.channel?.username}`} className="mb-1">
                                         <h3 className="text-lg font-bold text-white group-hover:text-purple-400 transition-colors truncate max-w-[200px]">
                                             {item.channel?.fullName || "Unknown Token"}
@@ -96,7 +96,7 @@ const Subscriptions = () => {
                                     </Link>
                                     <p className="text-sm text-gray-500 mb-6 font-medium">@{item.channel?.username}</p>
 
-                                    {/* Actions */}
+
                                     <div className="flex items-center gap-3 w-full">
                                         <Link
                                             to={`/channel/${item.channel?.username}`}

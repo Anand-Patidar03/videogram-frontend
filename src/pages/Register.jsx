@@ -50,14 +50,14 @@ const Register = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white relative overflow-hidden font-sans selection:bg-purple-500 selection:text-white">
 
-      {/* Background Ambience */}
+
       <div className="absolute top-[-20%] left-[-10%] w-[500px] h-[500px] bg-purple-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob"></div>
       <div className="absolute bottom-[-20%] right-[-10%] w-[500px] h-[500px] bg-pink-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob animation-delay-2000"></div>
 
-      {/* Register Card */}
+
       <div className="relative z-10 w-full max-w-lg p-8 md:p-10 bg-gray-800/40 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl">
 
-        {/* Header */}
+
         <div className="text-center mb-8">
           <h1 className="text-3xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-purple-500">
             Join the Revolution

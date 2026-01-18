@@ -15,21 +15,21 @@ const Profile = () => {
     const [isSubscribed, setIsSubscribed] = useState(false);
     const [subscribing, setSubscribing] = useState(false);
 
-    // Tab State
-    const [activeTab, setActiveTab] = useState("videos"); // 'videos' | 'playlists' | 'liked' | 'history'
+
+    const [activeTab, setActiveTab] = useState("videos");
     const [likedVideos, setLikedVideos] = useState([]);
     const [watchHistory, setWatchHistory] = useState([]);
 
-    // Avatar Modal
+
     const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
 
-    // Create Playlist State
+
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [newPlaylistName, setNewPlaylistName] = useState("");
     const [newPlaylistDesc, setNewPlaylistDesc] = useState("");
     const [creatingPlaylist, setCreatingPlaylist] = useState(false);
 
-    // Edit Profile State
+
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [refreshTrigger, setRefreshTrigger] = useState(0);
 
@@ -42,19 +42,19 @@ const Profile = () => {
                 setLoading(true);
                 setError(null);
 
-                // 1. Fetch Channel Profile
+
                 const profileRes = await api.post(`/users/channel/${username}`);
                 const profileData = profileRes.data.data;
                 setProfile(profileData);
                 setIsSubscribed(profileData.isSubscribed);
 
-                // 2. Fetch User's Videos
+
                 if (profileData._id) {
                     const videosRes = await api.get(`/videos?userId=${profileData._id}`);
                     setVideos(videosRes.data.data.docs || []);
                     fetchPlaylists(profileData._id);
 
-                    // Reset specialized tabs when profile changes
+
                     if (activeTab === 'liked' || activeTab === 'history') setActiveTab('videos');
                 }
             } catch (err) {
@@ -113,7 +113,7 @@ const Profile = () => {
             await api.post(`/subscriptions/c/${profile._id}`);
             setIsSubscribed(!isSubscribed);
 
-            // Optimistically update subscriber count
+
             setProfile(prev => ({
                 ...prev,
                 subscriberCount: isSubscribed ? prev.subscriberCount - 1 : prev.subscriberCount + 1
@@ -166,9 +166,9 @@ const Profile = () => {
     return (
         <div className="min-h-screen bg-gray-900 text-white font-sans selection:bg-purple-500 selection:text-white pb-20">
 
-            {/* 1. Header Section */}
+
             <div className="relative">
-                {/* Cover Image */}
+
                 <div className="h-48 md:h-72 w-full relative overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent to-gray-900/90 z-10"></div>
                     <img
@@ -178,11 +178,11 @@ const Profile = () => {
                     />
                 </div>
 
-                {/* Profile Info Wrapper */}
+
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-20 -mt-20">
                     <div className="flex flex-col md:flex-row items-center md:items-end md:justify-between gap-6">
 
-                        {/* Avatar & Basic Info */}
+
                         <div className="flex flex-col md:flex-row items-center md:items-end gap-6 text-center md:text-left">
                             <div className="relative group cursor-pointer" onClick={() => setIsAvatarModalOpen(true)}>
                                 <div className="w-32 h-32 md:w-40 md:h-40 rounded-full p-1 bg-gradient-to-tr from-blue-500 via-purple-500 to-pink-500">
@@ -203,7 +203,7 @@ const Profile = () => {
                             </div>
                         </div>
 
-                        {/* Action Buttons */}
+
                         <div className="flex items-center gap-3 mb-4">
                             {isOwner ? (
                                 <button
@@ -227,7 +227,7 @@ const Profile = () => {
                         </div>
                     </div>
 
-                    {/* Desktop Stats Row */}
+
                     <div className="hidden md:flex items-center gap-12 mt-8 py-6 border-y border-gray-800">
                         <div className="flex items-center gap-2">
                             <span className="text-2xl font-bold text-white">{videos.length}</span>
@@ -241,7 +241,7 @@ const Profile = () => {
                 </div>
             </div>
 
-            {/* Content Tabs */}
+
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
                 <div className="flex items-center gap-8 border-b border-gray-800 mb-8">
                     <button
@@ -274,7 +274,7 @@ const Profile = () => {
                     )}
                 </div>
 
-                {/* VIDEOS TAB */}
+
                 {activeTab === 'videos' && (
                     <>
                         <div className="flex items-center justify-between mb-8">
@@ -312,7 +312,7 @@ const Profile = () => {
                     </>
                 )}
 
-                {/* PLAYLISTS TAB */}
+
                 {activeTab === 'playlists' && (
                     <>
                         <div className="flex items-center justify-between mb-8">
@@ -334,7 +334,7 @@ const Profile = () => {
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                                 {playlists.map((playlist) => (
                                     <a key={playlist._id} href={`/playlist/${playlist._id}`} className="group bg-gray-800/40 rounded-2xl overflow-hidden border border-white/5 hover:border-blue-500/30 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl block">
-                                        {/* Thumbnail (Use first video or placeholder) */}
+
                                         <div className="relative aspect-video bg-gray-900 overflow-hidden">
                                             {playlist.videos && playlist.videos.length > 0 && playlist.videos[0].thumbnail ? (
                                                 <img
@@ -348,13 +348,13 @@ const Profile = () => {
                                                 </div>
                                             )}
 
-                                            {/* Count Overlay */}
+
                                             <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent">
                                                 <div className="absolute bottom-3 right-3 bg-black/60 px-2 py-0.5 rounded text-xs font-bold text-white">
                                                     {playlist.videos?.length || 0} Videos
                                                 </div>
                                             </div>
-                                            {/* Hover Play Overlay */}
+
                                             <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                                 <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center">
                                                     <svg className="w-6 h-6 text-white fill-current translate-x-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
@@ -380,7 +380,7 @@ const Profile = () => {
                     </>
                 )}
 
-                {/* LIKED VIDEOS TAB */}
+
                 {activeTab === 'liked' && isOwner && (
                     <>
                         <div className="flex items-center justify-between mb-8">
@@ -416,7 +416,7 @@ const Profile = () => {
                     </>
                 )}
 
-                {/* WATCH HISTORY TAB */}
+
                 {activeTab === 'history' && isOwner && (
                     <>
                         <div className="flex items-center justify-between mb-8">
@@ -451,7 +451,7 @@ const Profile = () => {
                 )}
             </div>
 
-            {/* Create Playlist Modal */}
+
             {isCreateModalOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
                     <div className="bg-gray-900 border border-gray-700 p-6 rounded-2xl w-full max-w-md shadow-2xl">
@@ -499,7 +499,7 @@ const Profile = () => {
                 </div>
             )}
 
-            {/* Edit Profile Modal */}
+
             {isEditModalOpen && (
                 <EditProfile
                     user={profile}
@@ -508,7 +508,7 @@ const Profile = () => {
                 />
             )}
 
-            {/* Avatar Modal */}
+
             {isAvatarModalOpen && profile && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-4 cursor-zoom-out" onClick={() => setIsAvatarModalOpen(false)}>
                     <div className="relative max-w-4xl max-h-[90vh] w-full h-full flex items-center justify-center">

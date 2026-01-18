@@ -13,7 +13,7 @@ const PlaylistDetail = () => {
     const [error, setError] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
 
-    // Edit Form State
+
     const [editName, setEditName] = useState("");
     const [editDesc, setEditDesc] = useState("");
 
@@ -47,11 +47,8 @@ const PlaylistDetail = () => {
                 name: editName,
                 description: editDesc
             });
-            setPlaylist(res.data.data); // Update with returned data (might need to re-populate if backend returns unpopulated)
-            // Ideally we re-fetch to be safe if populate is needed, or backend returns fully populated.
-            // My backend controller returns the updated doc. Let's assume generic return. 
-            // Actually, if update doesn't return populated 'videos', we might lose them in UI if we blindly replace.
-            // Let's just update the local state fields that changed.
+            setPlaylist(res.data.data);
+
             setPlaylist(prev => ({ ...prev, name: editName, description: editDesc }));
             setIsEditing(false);
         } catch (err) {
@@ -105,10 +102,10 @@ const PlaylistDetail = () => {
         <div className="min-h-screen bg-gray-900 pt-24 px-4 md:px-8 pb-20 text-white font-sans selection:bg-purple-500 selection:text-white">
             <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-10">
 
-                {/* Left Column: Playlist Info */}
+
                 <div className="lg:col-span-1">
                     <div className="sticky top-24">
-                        {/* Cover Stack Effect */}
+
                         <div className="relative group mx-auto max-w-sm lg:mx-0">
                             <div className="absolute top-0 -inset-x-2 bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl h-[98%] blur opacity-25 group-hover:opacity-50 transition duration-500"></div>
                             <div className="relative aspect-video bg-gray-800 rounded-2xl overflow-hidden shadow-2xl border border-white/10">
@@ -160,7 +157,7 @@ const PlaylistDetail = () => {
                                         <p className="text-gray-300 text-sm leading-relaxed whitespace-pre-wrap">{playlist.description}</p>
                                     )}
 
-                                    {/* Action Buttons */}
+
                                     {isOwner && (
                                         <div className="flex gap-2 pt-2">
                                             <button
@@ -224,17 +221,17 @@ const PlaylistDetail = () => {
                     </div>
                 </div>
 
-                {/* Right Column: Video List */}
+
                 <div className="lg:col-span-2 space-y-4">
                     {playlist.videos && playlist.videos.length > 0 ? (
                         playlist.videos.map((video, idx) => (
                             <div key={video._id} className="group flex flex-col sm:flex-row gap-4 bg-gray-800/20 hover:bg-gray-800/60 p-3 rounded-xl transition-colors border border-transparent hover:border-white/5">
-                                {/* Index Number */}
+
                                 <div className="hidden sm:flex w-8 items-center justify-center text-gray-500 text-sm font-mono">
                                     {idx + 1}
                                 </div>
 
-                                {/* Thumbnail Wrapper (Mini) */}
+
                                 <Link to={`/videos/${video._id}`} className="relative w-full sm:w-40 aspect-video flex-shrink-0 bg-gray-900 rounded-lg overflow-hidden">
                                     <img src={video.thumbnail} alt={video.title} className="w-full h-full object-cover" />
                                     <span className="absolute bottom-1 right-1 bg-black/80 px-1 rounded text-[10px] font-bold font-mono text-white">
@@ -242,14 +239,14 @@ const PlaylistDetail = () => {
                                     </span>
                                 </Link>
 
-                                {/* Info */}
+
                                 <div className="flex-1 flex flex-col justify-center min-w-0">
                                     <Link to={`/videos/${video._id}`} className="block">
                                         <h3 className="text-white font-bold leading-tight truncate pr-8 cursor-pointer group-hover:text-purple-400 transition-colors">
                                             {video.title}
                                         </h3>
                                     </Link>
-                                    {/* <p className="text-sm text-gray-400 mt-1">{video.owner?.username || "Unknown"}</p> */}
+
                                     <div className="flex items-center gap-2 mt-1 text-xs text-gray-500">
                                         <span>{video.views} views</span>
                                         <span>•</span>
@@ -257,7 +254,7 @@ const PlaylistDetail = () => {
                                     </div>
                                 </div>
 
-                                {/* Actions */}
+
                                 {isOwner && (
                                     <div className="flex items-center gap-2 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                                         <button

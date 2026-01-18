@@ -5,20 +5,20 @@ const VideoCard = ({
   videoId,
   thumbnail,
   title,
-  channelName, // Acts as Full Name
-  ownerUsername, // New prop for linking
+  channelName,
+  ownerUsername,
   ownerAvatar,
   views,
   likes,
   uploadedAt,
   duration,
-  type = "vertical" // "vertical" | "horizontal"
+  type = "vertical"
 }) => {
-  const linkUsername = ownerUsername || channelName; // Fallback
+  const linkUsername = ownerUsername || channelName;
   if (type === "horizontal") {
     return (
       <div className="group flex flex-row gap-3 bg-gray-800/20 rounded-lg overflow-hidden border border-white/5 hover:border-purple-500/50 transition-all duration-300 hover:bg-gray-800/40">
-        {/* 1. Thumbnail Area (Smaller, Fixed Width) */}
+
         <Link to={`/videos/${videoId}`} className="block relative w-40 min-w-[160px] aspect-video overflow-hidden rounded-lg">
           <img
             src={thumbnail}
@@ -27,27 +27,27 @@ const VideoCard = ({
           />
           <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-300"></div>
 
-          {/* Duration Badge */}
+
           <div className="absolute bottom-1 right-1 px-1 py-0.5 bg-black/80 backdrop-blur-sm rounded text-[9px] font-bold text-white">
             {duration}
           </div>
         </Link>
 
-        {/* 2. Content Area */}
+
         <div className="flex-1 py-1 pr-2 min-w-0 flex flex-col justify-start">
-          {/* Title */}
+
           <Link to={`/videos/${videoId}`} className="block group/title">
             <h3 className="text-sm font-bold text-white leading-tight group-hover/title:text-purple-400 transition-colors line-clamp-2 mb-1">
               {title}
             </h3>
           </Link>
 
-          {/* Channel Name */}
+
           <Link to={`/channel/${linkUsername}`} className="text-xs text-gray-400 hover:text-white transition-colors mb-1 truncate block">
             {channelName}
           </Link>
 
-          {/* Meta Info */}
+
           <div className="flex items-center text-[10px] text-gray-500 gap-2 mt-auto">
             <span>{views} views</span>
             <span>•</span>
@@ -63,10 +63,10 @@ const VideoCard = ({
     );
   }
 
-  // Default Vertical Layout
+
   return (
     <div className="group bg-gray-800/40 rounded-xl overflow-hidden border border-white/5 hover:border-purple-500/50 transition-all duration-300 hover:shadow-[0_0_20px_rgba(168,85,247,0.15)] hover:-translate-y-1">
-      {/* 1. Thumbnail Area - Links to Video */}
+
       <Link to={`/videos/${videoId}`} className="block relative aspect-video overflow-hidden">
         <img
           src={thumbnail}
@@ -75,12 +75,12 @@ const VideoCard = ({
         />
         <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-300"></div>
 
-        {/* Duration Badge */}
+
         <div className="absolute bottom-1 right-1 px-1.5 py-0.5 bg-black/80 backdrop-blur-sm rounded text-[10px] font-bold text-white">
           {duration}
         </div>
 
-        {/* Play Icon Overlay */}
+
         <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
           <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
             <svg className="w-5 h-5 text-white fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
@@ -88,18 +88,18 @@ const VideoCard = ({
         </div>
       </Link>
 
-      {/* 2. Content Area */}
+
       <div className="p-3">
         <div className="flex justify-between items-start gap-2">
           <div className="flex-1 min-w-0">
-            {/* Title - Links to Video */}
+
             <Link to={`/videos/${videoId}`} className="block group/title">
               <h3 className="text-sm font-bold text-white leading-tight group-hover/title:text-purple-400 transition-colors line-clamp-2 mb-1">
                 {title}
               </h3>
             </Link>
 
-            {/* Channel Info with Avatar */}
+
             <div className="flex items-center gap-2 mb-2">
               <Link to={`/channel/${linkUsername}`} className="block flex-shrink-0">
                 <img
@@ -114,7 +114,7 @@ const VideoCard = ({
               </Link>
             </div>
 
-            {/* Meta Info */}
+
             <div className="flex items-center gap-3 text-[10px] font-medium text-gray-500">
               <span>{views} views</span>
               <span className="flex items-center gap-1">

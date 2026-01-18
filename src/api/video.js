@@ -3,5 +3,5 @@ export const getAllVideos = async () => {
     withCredentials: true,
   });
 
-  return res.data.data; // 👈 IMPORTANT
+  return res.data.data;
 };

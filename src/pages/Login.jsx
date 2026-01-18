@@ -36,14 +36,14 @@ const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900 text-white relative overflow-hidden font-sans selection:bg-purple-500 selection:text-white">
 
-      {/* Background Ambience */}
+
       <div className="absolute top-[-10%] left-[-10%] w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob"></div>
       <div className="absolute bottom-[-10%] right-[-10%] w-96 h-96 bg-blue-600 rounded-full mix-blend-multiply filter blur-[128px] opacity-20 animate-blob animation-delay-2000"></div>
 
-      {/* Login Card */}
+
       <div className="relative z-10 w-full max-w-md p-8 bg-gray-800/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl">
 
-        {/* Logo/Header */}
+
         <div className="text-center mb-8">
           <h1 className="text-3xl font-extrabold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
             ClipprX

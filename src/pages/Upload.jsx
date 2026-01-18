@@ -56,9 +56,9 @@ const Upload = () => {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
-    formData.append("videoFile", video); // Changed from "video" to "videoFile" to match backend
+    formData.append("videoFile", video);
     if (thumbnail) formData.append("thumbnail", thumbnail);
-    // Note: Visibility is state-only for now as backend support isn't confirmed
+
 
     try {
       setLoading(true);
@@ -67,7 +67,7 @@ const Upload = () => {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      console.log("Upload response:", res); // Debug log
+      console.log("Upload response:", res);
       alert("Video uploaded successfully 🎉");
       navigate("/");
     } catch (err) {
@@ -82,7 +82,7 @@ const Upload = () => {
     <div className="min-h-screen bg-gray-900 text-white font-sans selection:bg-purple-500 selection:text-white pb-20">
       <AppNavbar />
 
-      {/* Background Ambience */}
+
       <div className="fixed inset-0 z-0 pointer-events-none">
         <div className="absolute top-[10%] left-[20%] w-96 h-96 bg-purple-900/40 rounded-full mix-blend-screen filter blur-[128px] opacity-30 animate-pulse"></div>
         <div className="absolute bottom-[10%] right-[20%] w-96 h-96 bg-blue-900/40 rounded-full mix-blend-screen filter blur-[128px] opacity-30 animate-pulse animation-delay-4000"></div>
@@ -100,7 +100,7 @@ const Upload = () => {
         <div className="bg-gray-800/40 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl">
           <form onSubmit={handleSubmit} className="space-y-8">
 
-            {/* 1. Video Upload Area */}
+
             <div
               className={`relative border-2 border-dashed rounded-2xl p-10 text-center transition-all duration-300 ${dragActive ? 'border-purple-500 bg-purple-500/10' : 'border-gray-600 hover:border-gray-500 hover:bg-gray-700/30'}`}
               onDragEnter={handleDrag}
@@ -138,7 +138,7 @@ const Upload = () => {
               </div>
             </div>
 
-            {/* 2. Video Details */}
+
             <div className="space-y-6">
               <div className="space-y-2">
                 <label htmlFor="title" className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Video Title</label>
@@ -182,7 +182,7 @@ const Upload = () => {
               </div>
             </div>
 
-            {/* 3. Visibility Options */}
+
             <div className="space-y-3">
               <label className="text-xs font-semibold text-gray-400 uppercase tracking-wider ml-1">Visibility</label>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -205,7 +205,7 @@ const Upload = () => {
               </div>
             </div>
 
-            {/* 4. Action Buttons */}
+
             <div className="pt-6 flex flex-col md:flex-row gap-4">
               <button
                 type="submit"
